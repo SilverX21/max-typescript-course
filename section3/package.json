@@ -1,0 +1,16 @@
+{
+  "name": "section3",
+  "version": "1.0.0",
+  "description": "When you run `tsc --init`, TypeScript generates a **`tsconfig.json`** file. This file tells the TypeScript compiler (and your editor) **how to type-check your code, how to resolve modules, and how to emit output** (JS, `.d.ts`, sourcemaps, etc.).",
+  "main": "app.ts",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^25.0.10"
+  }
+}
