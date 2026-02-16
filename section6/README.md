@@ -26,9 +26,11 @@ This guide covers essential TypeScript features for object-oriented programming,
 ## Classes
 
 ### Explanation
+
 Classes are blueprints for creating objects with predefined properties and methods. They encapsulate data and behavior together, providing a foundation for object-oriented programming in TypeScript.
 
 ### Examples
+
 ```typescript
 class Person {
   name: string;
@@ -49,6 +51,7 @@ person1.greet(); // "Hello, I'm Alice and I'm 30 years old."
 ```
 
 ### Best Practices
+
 - Use PascalCase for class names
 - Keep classes focused on a single responsibility
 - Initialize all properties either in declaration or constructor
@@ -59,12 +62,13 @@ person1.greet(); // "Hello, I'm Alice and I'm 30 years old."
 class User {
   constructor(
     public name: string,
-    public email: string
+    public email: string,
   ) {}
 }
 ```
 
 ### What to Avoid
+
 - ❌ Creating god classes with too many responsibilities
 - ❌ Leaving properties uninitialized without definite assignment assertion
 - ❌ Using classes when simple objects or functions would suffice
@@ -77,7 +81,10 @@ class BadExample {
 
 // Bad: Unnecessary class for simple data
 class Point {
-  constructor(public x: number, public y: number) {}
+  constructor(
+    public x: number,
+    public y: number,
+  ) {}
 }
 // Better: Use a type or interface with object literal
 type Point = { x: number; y: number };
@@ -88,12 +95,15 @@ type Point = { x: number; y: number };
 ## Public vs Private Properties
 
 ### Explanation
+
 Access modifiers control the visibility of class members:
+
 - `public`: Accessible from anywhere (default)
 - `private`: Only accessible within the class
 - `#private`: ECMAScript private fields (hard private, runtime enforced)
 
 ### Examples
+
 ```typescript
 class BankAccount {
   public accountHolder: string;
@@ -126,6 +136,7 @@ console.log(account.#pin); // ✗ Error: Private field '#pin' must be declared i
 ```
 
 ### Best Practices
+
 - Default to `private` or `protected` and only make members `public` when necessary
 - Use `#private` fields for true encapsulation at runtime
 - Use private modifier for TypeScript-only compile-time checks
@@ -147,6 +158,7 @@ class ShoppingCart {
 ```
 
 ### What to Avoid
+
 - ❌ Making everything public by default
 - ❌ Accessing private members from outside (TypeScript allows at runtime)
 - ❌ Using private when you need protected for inheritance
@@ -171,9 +183,11 @@ console.log(t.secret); // Compile error, but works at runtime!
 ## Readonly Fields
 
 ### Explanation
+
 The `readonly` modifier prevents reassignment of a property after initialization. Properties can be initialized in their declaration or in the constructor.
 
 ### Examples
+
 ```typescript
 class Configuration {
   readonly apiUrl: string;
@@ -194,6 +208,7 @@ config.apiUrl = "https://new-url.com"; // ✗ Error
 ```
 
 ### Best Practices
+
 - Use `readonly` for values that should never change after initialization
 - Combine with `private` for immutable internal state
 - Use `readonly` arrays/objects to prevent reassignment (but not mutation)
@@ -203,7 +218,7 @@ config.apiUrl = "https://new-url.com"; // ✗ Error
 class AppConfig {
   constructor(
     private readonly appName: string,
-    private readonly version: string
+    private readonly version: string,
   ) {}
 
   getInfo() {
@@ -222,6 +237,7 @@ class Container {
 ```
 
 ### What to Avoid
+
 - ❌ Confusing `readonly` with deep immutability
 - ❌ Overusing `readonly` when values legitimately need to change
 - ❌ Forgetting that `readonly` is compile-time only
@@ -249,14 +265,16 @@ class Counter {
 ## Getters
 
 ### Explanation
+
 Getters are accessor methods that allow you to define a property-like interface while executing code when the value is accessed. They're defined using the `get` keyword.
 
 ### Examples
+
 ```typescript
 class Rectangle {
   constructor(
     private width: number,
-    private height: number
+    private height: number,
   ) {}
 
   get area(): number {
@@ -273,6 +291,7 @@ console.log(rect.area); // 50 (accessed like a property, not a method)
 ```
 
 ### Best Practices
+
 - Use getters for computed properties
 - Keep getters pure and side-effect free
 - Use getters to provide controlled access to private fields
@@ -296,7 +315,7 @@ class Circle {
 class User {
   constructor(
     private firstName: string,
-    private lastName: string
+    private lastName: string,
   ) {}
 
   get fullName(): string {
@@ -306,6 +325,7 @@ class User {
 ```
 
 ### What to Avoid
+
 - ❌ Performing expensive operations in getters
 - ❌ Having side effects in getters
 - ❌ Returning different values on consecutive calls without state changes
@@ -342,9 +362,11 @@ class Random {
 ## Setters
 
 ### Explanation
+
 Setters are accessor methods that allow you to execute code when a property is assigned a value. They're defined using the `set` keyword and provide validation and transformation logic.
 
 ### Examples
+
 ```typescript
 class Temperature {
   private _celsius: number = 0;
@@ -361,11 +383,11 @@ class Temperature {
   }
 
   get fahrenheit(): number {
-    return this._celsius * 9/5 + 32;
+    return (this._celsius * 9) / 5 + 32;
   }
 
   set fahrenheit(value: number) {
-    this.celsius = (value - 32) * 5/9;
+    this.celsius = ((value - 32) * 5) / 9;
   }
 }
 
@@ -375,6 +397,7 @@ console.log(temp.fahrenheit); // 77
 ```
 
 ### Best Practices
+
 - Use setters for validation and sanitization
 - Always pair setters with getters
 - Keep setter logic focused and simple
@@ -412,6 +435,7 @@ class Product {
 ```
 
 ### What to Avoid
+
 - ❌ Creating setters without corresponding getters
 - ❌ Performing complex operations or side effects in setters
 - ❌ Throwing errors for normal values (validate earlier in the flow)
@@ -432,9 +456,9 @@ class Bad {
 class Worse {
   set data(value: any) {
     // Sending HTTP request in a setter!
-    fetch('/api/data', {
-      method: 'POST',
-      body: JSON.stringify(value)
+    fetch("/api/data", {
+      method: "POST",
+      body: JSON.stringify(value),
     });
   }
 }
@@ -456,9 +480,11 @@ class Confusing {
 ## Static Properties and Methods
 
 ### Explanation
+
 Static members belong to the class itself rather than to instances. They're shared across all instances and can be accessed without creating an instance.
 
 ### Examples
+
 ```typescript
 class MathUtils {
   static PI = 3.14159;
@@ -482,6 +508,7 @@ console.log(MathUtils.calculateCircleArea(5)); // 78.53975
 ```
 
 ### Best Practices
+
 - Use static methods for utility functions that don't require instance state
 - Use static properties for constants and configuration
 - Use static factory methods for alternative constructors
@@ -492,7 +519,7 @@ console.log(MathUtils.calculateCircleArea(5)); // 78.53975
 class User {
   constructor(
     public name: string,
-    public email: string
+    public email: string,
   ) {}
 
   static createGuest(): User {
@@ -520,6 +547,7 @@ class Database {
 ```
 
 ### What to Avoid
+
 - ❌ Using static methods when instance methods are more appropriate
 - ❌ Accessing instance members from static methods
 - ❌ Overusing static methods (leads to procedural code)
@@ -530,7 +558,8 @@ class Database {
 class Calculator {
   constructor(private value: number) {}
 
-  static add(calc: Calculator, n: number) { // Awkward!
+  static add(calc: Calculator, n: number) {
+    // Awkward!
     return calc.value + n;
   }
 }
@@ -567,9 +596,11 @@ class Counter {
 ## Inheritance
 
 ### Explanation
+
 Inheritance allows a class to extend another class, inheriting its properties and methods. The child class (subclass) can add new members or override existing ones from the parent class (superclass).
 
 ### Examples
+
 ```typescript
 class Animal {
   constructor(public name: string) {}
@@ -600,6 +631,7 @@ bird.move(); // "Tweety flew 5m." (overridden method)
 ```
 
 ### Best Practices
+
 - Use `super()` to call the parent constructor (required)
 - Use `super.method()` to call parent methods
 - Favor composition over inheritance when appropriate
@@ -611,7 +643,7 @@ bird.move(); // "Tweety flew 5m." (overridden method)
 class Vehicle {
   constructor(
     public brand: string,
-    protected speed: number = 0
+    protected speed: number = 0,
   ) {}
 
   accelerate(amount: number) {
@@ -622,7 +654,7 @@ class Vehicle {
 class Car extends Vehicle {
   constructor(
     brand: string,
-    private doors: number
+    private doors: number,
   ) {
     super(brand); // Must call parent constructor
   }
@@ -638,7 +670,7 @@ class ElectricCar extends Car {
   constructor(
     brand: string,
     doors: number,
-    private batteryCapacity: number
+    private batteryCapacity: number,
   ) {
     super(brand, doors);
   }
@@ -646,6 +678,7 @@ class ElectricCar extends Car {
 ```
 
 ### What to Avoid
+
 - ❌ Deep inheritance hierarchies (more than 3 levels)
 - ❌ Using inheritance just for code reuse (use composition)
 - ❌ Forgetting to call `super()` in derived class constructors
@@ -677,7 +710,10 @@ class Parent {
   constructor(public name: string) {}
 }
 class Child extends Parent {
-  constructor(name: string, public age: number) {
+  constructor(
+    name: string,
+    public age: number,
+  ) {
     // Missing super(name);
     this.age = age; // ✗ Error: 'super' must be called before accessing 'this'
   }
@@ -687,12 +723,18 @@ class Child extends Parent {
 class Rectangle {
   constructor(
     protected width: number,
-    protected height: number
+    protected height: number,
   ) {}
 
-  setWidth(w: number) { this.width = w; }
-  setHeight(h: number) { this.height = h; }
-  getArea() { return this.width * this.height; }
+  setWidth(w: number) {
+    this.width = w;
+  }
+  setHeight(h: number) {
+    this.height = h;
+  }
+  getArea() {
+    return this.width * this.height;
+  }
 }
 
 class Square extends Rectangle {
@@ -708,9 +750,11 @@ class Square extends Rectangle {
 ## Protected Modifier
 
 ### Explanation
+
 The `protected` modifier makes members accessible within the class and its subclasses, but not from outside. It's a middle ground between `private` and `public`.
 
 ### Examples
+
 ```typescript
 class BankAccount {
   protected balance: number;
@@ -745,6 +789,7 @@ console.log(savings.balance); // ✗ Error: 'balance' is protected
 ```
 
 ### Best Practices
+
 - Use `protected` for members that subclasses need to access
 - Use `protected` for template method patterns
 - Document protected members well (they're part of the subclass API)
@@ -768,7 +813,7 @@ abstract class DataProcessor {
 
 class JSONProcessor extends DataProcessor {
   protected validate(data: any): boolean {
-    return typeof data === 'object';
+    return typeof data === "object";
   }
 
   protected transform(data: any): any {
@@ -785,7 +830,7 @@ class Configuration {
   protected constructor(private settings: Record<string, any>) {}
 
   static createDefault(): Configuration {
-    return new Configuration({ theme: 'light', lang: 'en' });
+    return new Configuration({ theme: "light", lang: "en" });
   }
 
   static createFromFile(path: string): Configuration {
@@ -796,6 +841,7 @@ class Configuration {
 ```
 
 ### What to Avoid
+
 - ❌ Using `protected` as a lazy alternative to proper encapsulation
 - ❌ Overusing `protected` (most things should be `private`)
 - ❌ Changing protected member behavior in ways that break subclasses
@@ -839,7 +885,8 @@ class Engine {
   protected stop() {}
 }
 
-class Car extends Engine { // Car is not an Engine!
+class Car extends Engine {
+  // Car is not an Engine!
   // Better to have an engine as a property
 }
 ```
@@ -849,9 +896,11 @@ class Car extends Engine { // Car is not an Engine!
 ## Abstract Classes
 
 ### Explanation
+
 Abstract classes are base classes that cannot be instantiated directly. They can contain abstract members (without implementation) that must be implemented by derived classes, as well as concrete members with implementations.
 
 ### Examples
+
 ```typescript
 abstract class Shape {
   constructor(protected color: string) {}
@@ -869,7 +918,7 @@ abstract class Shape {
 class Circle extends Shape {
   constructor(
     color: string,
-    private radius: number
+    private radius: number,
   ) {
     super(color);
   }
@@ -887,7 +936,7 @@ class Rectangle extends Shape {
   constructor(
     color: string,
     private width: number,
-    private height: number
+    private height: number,
   ) {
     super(color);
   }
@@ -907,6 +956,7 @@ console.log(circle.describe()); // "A blue shape with area 78.53981633974483"
 ```
 
 ### Best Practices
+
 - Use abstract classes to define a common interface with some shared implementation
 - Make methods abstract only when subclasses must provide their own implementation
 - Provide concrete helper methods that use abstract methods (template pattern)
@@ -952,7 +1002,7 @@ class UserHandler extends HTTPHandler {
 
   // Override default authentication
   protected authenticate(request: Request): boolean {
-    return request.headers.has('Authorization');
+    return request.headers.has("Authorization");
   }
 }
 
@@ -971,12 +1021,13 @@ abstract class Repository<T> {
   }
 
   findById(id: string): T | undefined {
-    return this.items.find(item => this.getId(item) === id);
+    return this.items.find((item) => this.getId(item) === id);
   }
 }
 ```
 
 ### What to Avoid
+
 - ❌ Making all methods abstract (use an interface instead)
 - ❌ Using abstract classes when you don't need shared implementation
 - ❌ Making too many methods abstract (defeats the purpose)
@@ -1029,9 +1080,11 @@ abstract class TooManyAbstractMethods {
 ## Interfaces
 
 ### Explanation
+
 Interfaces define contracts that objects must fulfill. They describe the shape of an object, specifying what properties and methods it should have, without providing implementation.
 
 ### Examples
+
 ```typescript
 interface User {
   id: number;
@@ -1043,7 +1096,7 @@ interface User {
 const user: User = {
   id: 1,
   name: "Alice",
-  email: "alice@example.com"
+  email: "alice@example.com",
 };
 
 interface Logger {
@@ -1057,11 +1110,12 @@ const consoleLogger: Logger = {
   },
   error(message: string, error: Error) {
     console.error(message, error);
-  }
+  },
 };
 ```
 
 ### Best Practices
+
 - Use interfaces for defining object shapes and contracts
 - Prefer interfaces over type aliases for object types
 - Use interfaces to enable better TypeScript tooling and error messages
@@ -1099,11 +1153,12 @@ interface Dictionary<T> {
 const scores: Dictionary<number> = {
   alice: 95,
   bob: 87,
-  charlie: 92
+  charlie: 92,
 };
 ```
 
 ### What to Avoid
+
 - ❌ Using "I" prefix for interfaces (not a TypeScript convention)
 - ❌ Creating overly complex or large interfaces
 - ❌ Using interfaces when type aliases are more appropriate
@@ -1146,9 +1201,11 @@ interface Bad {
 ## Interface as Object Types
 
 ### Explanation
+
 Interfaces are primarily used to define the structure of objects, specifying what properties an object should have and their types.
 
 ### Examples
+
 ```typescript
 interface Point {
   x: number;
@@ -1173,7 +1230,7 @@ function greet(person: Person): string {
 const john: Person = {
   firstName: "John",
   lastName: "Doe",
-  age: 30
+  age: 30,
 };
 
 console.log(greet(john)); // "Hello, John Doe!"
@@ -1183,13 +1240,14 @@ const jane = {
   firstName: "Jane",
   lastName: "Smith",
   age: 25,
-  email: "jane@example.com" // Extra property is OK
+  email: "jane@example.com", // Extra property is OK
 };
 
 console.log(greet(jane)); // ✓ Works! Has all required properties
 ```
 
 ### Best Practices
+
 - Use interfaces to document object structures
 - Leverage structural typing (duck typing)
 - Use optional properties (`?`) for properties that may not exist
@@ -1216,19 +1274,19 @@ interface Author {
 
 // Good: Using type guards with interfaces
 interface Dog {
-  type: 'dog';
+  type: "dog";
   bark(): void;
 }
 
 interface Cat {
-  type: 'cat';
+  type: "cat";
   meow(): void;
 }
 
 type Pet = Dog | Cat;
 
 function handlePet(pet: Pet) {
-  if (pet.type === 'dog') {
+  if (pet.type === "dog") {
     pet.bark(); // TypeScript knows it's a Dog
   } else {
     pet.meow(); // TypeScript knows it's a Cat
@@ -1237,6 +1295,7 @@ function handlePet(pet: Pet) {
 ```
 
 ### What to Avoid
+
 - ❌ Excess property checking issues with object literals
 - ❌ Confusing interfaces with runtime values
 - ❌ Overly permissive types with index signatures
@@ -1281,9 +1340,11 @@ interface UserRecord {
 ## Using Interfaces to Define Function Types
 
 ### Explanation
+
 Interfaces can define function signatures, specifying the parameters and return type of functions. This is useful for callback types and function contracts.
 
 ### Examples
+
 ```typescript
 // Function type using interface
 interface MathOperation {
@@ -1323,6 +1384,7 @@ function addEventListener(event: string, handler: EventHandler): void {
 ```
 
 ### Best Practices
+
 - Use interfaces for function types when they have additional properties
 - Use type aliases for simple function signatures
 - Be explicit about optional parameters and return types
@@ -1349,14 +1411,15 @@ interface ResponseHandler<T> {
 
 function fetchData<T>(url: string, handler: ResponseHandler<T>): void {
   fetch(url)
-    .then(res => res.json())
-    .then(data => handler.onSuccess(data))
-    .catch(error => handler.onError(error))
+    .then((res) => res.json())
+    .then((data) => handler.onSuccess(data))
+    .catch((error) => handler.onError(error))
     .finally(() => handler.onComplete?.());
 }
 ```
 
 ### What to Avoid
+
 - ❌ Using interfaces for simple function types (use type instead)
 - ❌ Confusing call signatures with method signatures
 - ❌ Overcomplicating function interfaces
@@ -1383,7 +1446,7 @@ interface OverlyComplex {
     arg2: U,
     arg3: V,
     callback: (a: T, b: U) => V,
-    options?: { timeout: number; retries: number }
+    options?: { timeout: number; retries: number },
   ): Promise<Array<T | U | V>>;
 }
 // Simplify or use type alias for complex signatures
@@ -1403,9 +1466,11 @@ type EventHandler = (data: any) => void;
 ## Implementing Interfaces
 
 ### Explanation
+
 Classes can implement interfaces using the `implements` keyword. This ensures that the class adheres to the contract defined by the interface, providing all required properties and methods.
 
 ### Examples
+
 ```typescript
 interface Drawable {
   draw(): void;
@@ -1415,7 +1480,7 @@ interface Drawable {
 class Circle implements Drawable {
   constructor(
     private radius: number,
-    private color: string = "black"
+    private color: string = "black",
   ) {}
 
   draw(): void {
@@ -1436,7 +1501,7 @@ class Rectangle implements Drawable {
   constructor(
     private width: number,
     private height: number,
-    private color: string = "black"
+    private color: string = "black",
   ) {}
 
   draw(): void {
@@ -1462,7 +1527,7 @@ class Sprite implements Drawable, Movable, Resizable {
     private x: number = 0,
     private y: number = 0,
     private scale: number = 1,
-    private color: string = "white"
+    private color: string = "white",
   ) {}
 
   draw(): void {
@@ -1485,6 +1550,7 @@ class Sprite implements Drawable, Movable, Resizable {
 ```
 
 ### Best Practices
+
 - Use `implements` to enforce contracts on classes
 - Implement multiple interfaces for flexible, composable designs
 - Keep interfaces focused and cohesive (Interface Segregation Principle)
@@ -1516,8 +1582,8 @@ class LocalStorageAdapter implements DataStorage {
 class APIStorageAdapter implements DataStorage {
   async save(key: string, value: any): Promise<void> {
     await fetch(`/api/data/${key}`, {
-      method: 'POST',
-      body: JSON.stringify(value)
+      method: "POST",
+      body: JSON.stringify(value),
     });
   }
 
@@ -1527,7 +1593,7 @@ class APIStorageAdapter implements DataStorage {
   }
 
   async delete(key: string): Promise<void> {
-    await fetch(`/api/data/${key}`, { method: 'DELETE' });
+    await fetch(`/api/data/${key}`, { method: "DELETE" });
   }
 }
 
@@ -1568,6 +1634,7 @@ class ReadOnlyFile implements Reader {
 ```
 
 ### What to Avoid
+
 - ❌ Forgetting to implement all interface members
 - ❌ Using incorrect signatures when implementing
 - ❌ Creating fat interfaces (violates Interface Segregation Principle)
@@ -1594,7 +1661,8 @@ interface Contract {
 }
 
 class WrongImplementation implements Contract {
-  process(data: number): string { // ✗ Wrong parameter and return types!
+  process(data: number): string {
+    // ✗ Wrong parameter and return types!
     return "";
   }
 }
@@ -1634,7 +1702,8 @@ class Focused implements Interface1 {
 }
 
 // Bad: Unnecessary implementation
-class SimpleClass implements Object { // Pointless
+class SimpleClass implements Object {
+  // Pointless
   toString(): string {
     return "simple";
   }
@@ -1646,9 +1715,11 @@ class SimpleClass implements Object { // Pointless
 ## Ensuring Base Types with Interfaces
 
 ### Explanation
+
 Interfaces can be used to ensure that classes or objects conform to a specific structure. This is useful for type checking, polymorphism, and ensuring consistency across different implementations.
 
 ### Examples
+
 ```typescript
 interface Animal {
   name: string;
@@ -1688,24 +1759,24 @@ handleAnimal({
   name: "Bird",
   makeSound() {
     console.log("Tweet!");
-  }
+  },
 }); // Works!
 
 // Type guards with interfaces
 interface Success {
-  status: 'success';
+  status: "success";
   data: any;
 }
 
 interface Failure {
-  status: 'failure';
+  status: "failure";
   error: string;
 }
 
 type Result = Success | Failure;
 
 function handleResult(result: Result) {
-  if (result.status === 'success') {
+  if (result.status === "success") {
     console.log(result.data); // TypeScript knows it's Success
   } else {
     console.error(result.error); // TypeScript knows it's Failure
@@ -1714,6 +1785,7 @@ function handleResult(result: Result) {
 ```
 
 ### Best Practices
+
 - Use interfaces to define contracts for polymorphic behavior
 - Leverage discriminated unions for type-safe conditional logic
 - Use interfaces as function parameter types for flexibility
@@ -1752,18 +1824,18 @@ class Checkout {
 
 // Good: Discriminated unions
 interface Square {
-  kind: 'square';
+  kind: "square";
   size: number;
 }
 
 interface Rectangle {
-  kind: 'rectangle';
+  kind: "rectangle";
   width: number;
   height: number;
 }
 
 interface Circle {
-  kind: 'circle';
+  kind: "circle";
   radius: number;
 }
 
@@ -1771,11 +1843,11 @@ type Shape = Square | Rectangle | Circle;
 
 function getArea(shape: Shape): number {
   switch (shape.kind) {
-    case 'square':
+    case "square":
       return shape.size ** 2;
-    case 'rectangle':
+    case "rectangle":
       return shape.width * shape.height;
-    case 'circle':
+    case "circle":
       return Math.PI * shape.radius ** 2;
   }
 }
@@ -1804,6 +1876,7 @@ class UserRepository implements Repository<User> {
 ```
 
 ### What to Avoid
+
 - ❌ Not using discriminated unions when you should
 - ❌ Using `any` type and bypassing interface checks
 - ❌ Casting types unsafely
@@ -1868,9 +1941,11 @@ interface Thing {
 ## Extending Interfaces
 
 ### Explanation
+
 Interfaces can extend other interfaces, inheriting their properties and methods. This allows you to build complex types from simpler ones and create hierarchies of related types.
 
 ### Examples
+
 ```typescript
 interface Person {
   name: string;
@@ -1886,7 +1961,7 @@ const employee: Employee = {
   name: "John Doe",
   age: 30,
   employeeId: 12345,
-  department: "Engineering"
+  department: "Engineering",
 };
 
 // Extending multiple interfaces
@@ -1901,7 +1976,7 @@ interface Identifiable {
 
 interface User extends Person, Timestamped, Identifiable {
   email: string;
-  role: 'admin' | 'user';
+  role: "admin" | "user";
 }
 
 const user: User = {
@@ -1911,7 +1986,7 @@ const user: User = {
   email: "alice@example.com",
   role: "admin",
   createdAt: new Date(),
-  updatedAt: new Date()
+  updatedAt: new Date(),
 };
 
 // Overriding properties when extending
@@ -1927,6 +2002,7 @@ interface Dog extends Animal {
 ```
 
 ### Best Practices
+
 - Use interface extension for "is-a" relationships
 - Build complex interfaces from simple, reusable pieces
 - Create base interfaces for common properties
@@ -1990,7 +2066,7 @@ interface Vehicle {
 
 interface Car extends Vehicle {
   doors: number;
-  transmission: 'manual' | 'automatic';
+  transmission: "manual" | "automatic";
 }
 
 interface ElectricCar extends Car {
@@ -2001,6 +2077,7 @@ interface ElectricCar extends Car {
 ```
 
 ### What to Avoid
+
 - ❌ Creating deep inheritance hierarchies
 - ❌ Extending interfaces with conflicting properties
 - ❌ Using extension when composition is more appropriate
@@ -2045,7 +2122,7 @@ interface Service {
 class ServiceImpl implements Service {
   constructor(
     private logger: Logger,
-    private cache: Cache
+    private cache: Cache,
   ) {}
 
   doSomething(): void {
@@ -2058,18 +2135,13 @@ interface A extends B {
   a: string;
 }
 
-interface B extends A { // ✗ Error: Interface 'B' circularly references itself
+interface B extends A {
+  // ✗ Error: Interface 'B' circularly references itself
   b: string;
 }
 
 // Bad: Over-extending
-interface Everything extends
-  Interface1,
-  Interface2,
-  Interface3,
-  Interface4,
-  Interface5,
-  Interface6 {
+interface Everything extends Interface1, Interface2, Interface3, Interface4, Interface5, Interface6 {
   // Too many interfaces - consider refactoring
 }
 ```
@@ -2091,6 +2163,7 @@ This guide covered the essential TypeScript features for object-oriented program
 9. **Interface Extension**: Build complex types from simpler ones
 
 ### Key Principles
+
 - **Encapsulation**: Hide implementation details using access modifiers
 - **Inheritance**: Reuse code through class hierarchies (prefer shallow)
 - **Polymorphism**: Use interfaces for flexible, interchangeable implementations
@@ -2099,6 +2172,7 @@ This guide covered the essential TypeScript features for object-oriented program
 - **Dependency Inversion**: Depend on abstractions (interfaces), not concretions
 
 ### When to Use What
+
 - **Classes**: When you need instances with shared behavior and state
 - **Interfaces**: When you need to define contracts or object shapes
 - **Abstract Classes**: When you need shared implementation + contract enforcement
