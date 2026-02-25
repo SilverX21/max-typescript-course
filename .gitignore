@@ -141,3 +141,6 @@ vite.config.ts.timestamp-*
 # Course
 section*/node_modules
 section*/dist
+
+# Webstorm
+.idea/
