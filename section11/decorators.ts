@@ -30,15 +30,39 @@ function autobind(
   target: (...arfs: any[]) => any,
   ctx: ClassMethodDecoratorContext, //we use the class method decorator context
 ) {
-  console.log(target);
-  console.log(ctx);
+  //here we can say that the this keyword will refer to the instance of the class that we are using the decorator
+  ctx.addInitializer(function (this: any) {
+    this[ctx.name] = this[ctx.name].bind(this);
+  });
+
+  return function (this: any) {
+    console.log("Executing original function");
+    target.apply(this);
+  };
+}
+
+//we can receive values like this, we use a decorator factory, then we pass the value to the decorator
+function replacer<T>(initValue: T) {
+  return function replacerDecorator(
+    target: undefined,
+    ctx: ClassFieldDecoratorContext,
+  ) {
+    console.log(target);
+    console.log(ctx);
+
+    return (initialValue: any) => {
+      console.log("Initial value...", initialValue);
+      return initValue;
+    };
+  };
 }
 
 //we can use decorators like this, by adding the @ symbol
 //decorators are just functions, and they receive the target of the decoration as an argument. In this case, the target is the Person class. We can use this target to modify the class or add extra functionality to it
 @logger
 class Person {
-  name = "Silver";
+  @replacer("Silver")
+  name = "Gold";
 
   constructor() {
     //this allows us to bind the greet method to the instance of the class
