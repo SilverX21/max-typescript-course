@@ -11,7 +11,7 @@
     "typescript",
     "course"
   ],
-  "author": "Maximilian Schwarzmüller",
+  "author": "SilverX21",
   "license": "ISC",
   "devDependencies": {
     "lite-server": "^2.5.4"
